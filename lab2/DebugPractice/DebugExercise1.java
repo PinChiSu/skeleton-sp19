@@ -4,7 +4,20 @@
  */
 public class DebugExercise1 {
     public static int divideThenRound(int top, int bottom) {
-        int quotient = top / bottom;
+        int quotient;
+        if(top / bottom == 0){
+            double t = top;
+            double b = bottom;
+            if(t/b >= 0.5){
+                quotient = 1;
+            }
+            else {
+                quotient = 0;
+            }
+        }
+        else {
+            quotient = top / bottom;
+        }
         int result = Math.round(quotient);
         return result;
     }
