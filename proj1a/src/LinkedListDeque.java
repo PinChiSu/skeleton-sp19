@@ -45,7 +45,7 @@ public class LinkedListDeque <T>{
     }
 
     public boolean isEmpty(){
-        if(sentinel1.next == null && sentinel2.prev == null){
+        if(sentinel1.next == sentinel2 && sentinel2.prev == sentinel1){
             return true;
         }
         else {
@@ -61,6 +61,7 @@ public class LinkedListDeque <T>{
         StuffNode p1 = sentinel1;
         while (p1.next != sentinel2){
             System.out.print(p1.next.item + " ");
+            p1.next = p1.next.next;
         }
         //print out a new line.
         System.out.println();
@@ -105,15 +106,37 @@ public class LinkedListDeque <T>{
         return p.next.item;
     }
 
-    public  LinkedListDeque(LinkedListDeque other){
-
-    }
-
     public T getRecursive(int index){
+        //consider if the LLD is empty.
+        if(this.sentinel1.next == this.sentinel2){
+            return null;
+        }
+        return this.getRecursive(index, this.sentinel1.next);
+    }
+
+    public T getRecursive(int index, StuffNode p){
+        if(index == 0){
+            return p.item;
+        }
+        if(p.next == sentinel2){
+            return null;
+        }
+        return getRecursive(index - 1, p.next);
+    }
+
+    public  LinkedListDeque(LinkedListDeque other) {
+        sentinel1 = new StuffNode(null, null, null);
+        sentinel2 = new StuffNode(null, sentinel1, null);
+        sentinel1.next = sentinel2;
+        size = 0;
+
+        for (int i = 0; i < other.size(); i++) {
+            addLast((T) other.get(i));
+        }
 
     }
 
 
 
-    
+
 }
