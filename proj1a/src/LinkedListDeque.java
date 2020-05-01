@@ -64,9 +64,9 @@ public class LinkedListDeque<T> {
 
     }
 
-    public T removeFirst(){
+    public T removeFirst() {
         T rmitem;
-        if(sentinel1.next == sentinel2){
+        if (sentinel1.next == sentinel2) {
             return null;
         }
         rmitem = sentinel1.next.item;
@@ -74,9 +74,8 @@ public class LinkedListDeque<T> {
         sentinel1.next = sentinel1.next.next;
         sentinel1.next.prev = sentinel1;
         rm = null;
-        if (size >= 0) {
-            size -= 1;
-        } else {
+        size -= 1;
+        if ((size -= 1) < 0) {
             size = 0;
         }
         return rmitem;
@@ -85,16 +84,15 @@ public class LinkedListDeque<T> {
     public T removeLast() {
         T rmitem;
         StuffNode rm = sentinel2.prev;
-        if(sentinel2.prev == sentinel1){
+        if (sentinel2.prev == sentinel1) {
             return null;
         }
         rmitem = sentinel2.prev.item;
         sentinel2.prev = sentinel2.prev.prev;
         sentinel2.prev.next = sentinel2;
         rm = null;
-        if (size >= 0) {
-            size -= 1;
-        } else {
+        size -= 1;
+        if ((size -= 1) < 0) {
             size = 0;
         }
         return rmitem;

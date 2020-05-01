@@ -1,13 +1,18 @@
 public class ArrayDeque<T> {
     //create the basic T[], size.
     private T[] items;
+    private int nextFirst;
+    private int nextLast;
     private int size;
     //Create a new integer counting the usage.
 
     public ArrayDeque() {
         items = (T[]) new Object[8]; // 括號裡表示是這個Object的意思
         size = 0;
+        nextFirst = 0;
+        nextLast = 1;
     }
+
 
     // Adds the item in the AarrayDeque.
     public void addFirst(T item) {
@@ -15,11 +20,6 @@ public class ArrayDeque<T> {
         if (size == items.length) {
             resize();
         }
-        //the list go backward
-        T[] tempItem = (T[]) new Object[items.length];
-        System.arraycopy(items, 0, tempItem, 1, size);
-        //Must at first
-        items[0] = item;
         size += 1;
     }
 
@@ -51,16 +51,19 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if(items == null) {
+        if (items == null) {
             return null;
         }
         //Create the new array and copy all the items in it.
         T rmitem = items[0];
         T[] tempItem = (T[]) new Object[items.length];
-        System.arraycopy(items, 1, tempItem, 0,size - 1);
+        System.arraycopy(items, 1, tempItem, 0, size - 1);
         items[0] = null;
         items = tempItem;
         size -= 1;
+        if ((size -= 1) < 0) {
+            size = 0;
+        }
         //Checks the usage.
         if (!checkusage()) {
             resize();
@@ -75,6 +78,9 @@ public class ArrayDeque<T> {
         T rmitem = items[size - 1];
         items[size - 1] = null;
         size -= 1;
+        if ((size -= 1) < 0) {
+            size = 0;
+        }
         //Checks the usage.
         if (!checkusage()) {
             resize();
