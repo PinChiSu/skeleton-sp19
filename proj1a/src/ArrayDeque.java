@@ -1,31 +1,31 @@
 public class ArrayDeque<T> {
     //create the basic T[], size.
-    public T[] items;
-    public int size;
-    //Create a new integer counting the useage.
+    private T[] items;
+    private int size;
+    //Create a new integer counting the usage.
 
-    public ArrayDeque(){
+    public ArrayDeque() {
         items = (T[]) new Object[8]; // 括號裡表示是這個Object的意思
         size = 0;
     }
 
     // Adds the item in the AarrayDeque.
-    public void addFirst(T item){
+    public void addFirst(T item) {
         //Checks out if out of length.
-        if(size == items.length){
+        if (size == items.length) {
             resize();
         }
         //the list go backward
-        T[] temp_item = (T[]) new Object[items.length];
-        System.arraycopy(items, 0 , temp_item, 1, size);
+        T[] tempItem = (T[]) new Object[items.length];
+        System.arraycopy(items, 0, tempItem, 1, size);
         //Must at first
         items[0] = item;
         size += 1;
     }
 
     //Adds the item at last.
-    public void addLast(T item){
-        if(size == items.length){
+    public void addLast(T item) {
+        if (size == items.length) {
             resize();
         }
         items[size] = item;
@@ -33,92 +33,84 @@ public class ArrayDeque<T> {
     }
 
     //Makes sure if AD is empty.
-    public boolean isEmpty(){
-        if(items == null){
-            return true;
-        }
-        else {
-            return false;
-        }
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     //Gets the size.
-    public int size(){
+    public int size() {
         return size;
     }
 
     //print all the items in AD.
-    public void printDeque(){
-        for(int i = 0; i < items.length; i++){
-            System.out.print(items[i]+" ");
+    public void printDeque() {
+        for (int i = 0; i < items.length; i++) {
+            System.out.print(items[i] + " ");
         }
         System.out.println();
     }
 
-    public T removeFirst(){
-        if(items == null){
+    public T removeFirst() {
+        if(items == null) {
             return null;
         }
         //Create the new array and copy all the items in it.
         T rmitem = items[0];
-        T[] temp_item = (T[]) new Object[items.length];
-        System.arraycopy(items, 1 , temp_item, 0 ,size - 1);
+        T[] tempItem = (T[]) new Object[items.length];
+        System.arraycopy(items, 1, tempItem, 0,size - 1);
         items[0] = null;
-        items = temp_item;
+        items = tempItem;
         size -= 1;
-        //Checks the usesage.
-        if(checkusage() == false){
+        //Checks the usage.
+        if (!checkusage()) {
             resize();
         }
         return rmitem;
     }
 
-    public T removeLast(){
-        if(items == null){
+    public T removeLast() {
+        if (items == null) {
             return null;
         }
         T rmitem = items[size - 1];
         items[size - 1] = null;
         size -= 1;
         //Checks the usage.
-        if(checkusage() == false){
+        if (!checkusage()) {
             resize();
         }
         return rmitem;
     }
 
     //Gets the item on the index position.
-    public T get(int index){
-        if(index > size){
+    public T get(int index) {
+        if (index > size) {
             return null;
         }
         return items[index];
     }
 
     //Creates a deep copy of other, which means the whole new AD.
-    public ArrayDeque(ArrayDeque other){
-        T[] temp_item = (T[]) new Object[items.length];
-        System.arraycopy(other, 0, temp_item, 0, other.size);
-        items = temp_item;
+    /**Part of sp19 CS61B
+    public ArrayDeque(ArrayDeque other) {
+        T[] tempItem = (T[]) new Object[items.length];
+        System.arraycopy(other, 0, tempItem, 0, other.size);
+        items = tempItem;
         //size keeps the same.
     }
+     */
 
     //Checks if the usage > 25%
-    public boolean checkusage(){
-        if((size * 4 ) >= items.length){
-            return true;
-        }
-        else{
-            return false;
-        }
+    private boolean checkusage() {
+        return (size * 4) >= items.length;
     }
 
-    //Creates a bigger new items, keep the usesage at 25%.
-    private void resize(){
+    //Creates a bigger new items, keep the usage at 25%.
+    private void resize() {
         int capacity = size * 4;
-        T[] temp_items = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, temp_items, 0, size);
-        items = temp_items;
+        T[] tempItems = (T[]) new Object[capacity];
+        System.arraycopy(items, 0, tempItems, 0, size);
+        items = tempItems;
     }
 
 

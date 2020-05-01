@@ -1,10 +1,10 @@
-public class LinkedListDeque <T>{
-    private class StuffNode{
-        public T item;
-        public StuffNode next;
-        public StuffNode prev;
+public class LinkedListDeque<T> {
+    private class StuffNode {
+        private T item;
+        private StuffNode next;
+        private StuffNode prev;
 
-        public StuffNode(T i, StuffNode p, StuffNode n){
+        public StuffNode(T i, StuffNode p, StuffNode n) {
             item = i;
             next = n;
             prev = p;
@@ -16,14 +16,14 @@ public class LinkedListDeque <T>{
     private StuffNode sentinel2;
     private int size;
 
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         sentinel1 = new StuffNode(null, null, null);
         sentinel2 = new StuffNode(null, sentinel1, null);
         sentinel1.next = sentinel2;
         size = 0;
     }
-
-    public LinkedListDeque(T x){
+    /**sp19
+    public LinkedListDeque(T x) {
         //sentinel's item remain null.
         sentinel1 = new StuffNode(null , null, null);
         sentinel1.next = new StuffNode(x, sentinel1, sentinel2);
@@ -31,35 +31,31 @@ public class LinkedListDeque <T>{
         sentinel2.prev = sentinel1.next;
         size += 1;
     }
+     */
 
-    public void addFirst(T item){
+    public void addFirst(T item) {
         sentinel1.next = new StuffNode(item, sentinel1, sentinel1.next);
         sentinel1.next.next.prev = sentinel1.next;
         size += 1;
     }
 
-    public void addLast(T item){
+    public void addLast(T item) {
         sentinel2.prev = new StuffNode(item, sentinel2.prev, sentinel2);
         sentinel2.prev.prev.next = sentinel2.prev;
         size += 1;
     }
 
-    public boolean isEmpty(){
-        if(sentinel1.next == sentinel2 && sentinel2.prev == sentinel1){
-            return true;
-        }
-        else {
-            return false;
-        }
+    public boolean isEmpty() {
+        return sentinel1.next == sentinel2 && sentinel2.prev == sentinel1;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
-    public void printDeque(){
+    public void printDeque() {
         StuffNode p1 = sentinel1;
-        while (p1.next != sentinel2){
+        while (p1.next != sentinel2) {
             System.out.print(p1.next.item + " ");
             p1.next = p1.next.next;
         }
@@ -78,10 +74,15 @@ public class LinkedListDeque <T>{
         sentinel1.next = sentinel1.next.next;
         sentinel1.next.prev = sentinel1;
         rm = null;
+        if (size >= 0) {
+            size -= 1;
+        } else {
+            size = 0;
+        }
         return rmitem;
     }
 
-    public T removeLast(){
+    public T removeLast() {
         T rmitem;
         StuffNode rm = sentinel2.prev;
         if(sentinel2.prev == sentinel1){
@@ -91,39 +92,46 @@ public class LinkedListDeque <T>{
         sentinel2.prev = sentinel2.prev.prev;
         sentinel2.prev.next = sentinel2;
         rm = null;
+        if (size >= 0) {
+            size -= 1;
+        } else {
+            size = 0;
+        }
         return rmitem;
     }
 
-    public T get(int index){
+    public T get(int index) {
         int i = 0;
         StuffNode p = sentinel1;
-        while (i <= index){
-            if(p.next == sentinel2){
+        while (i <= index) {
+            if (p.next == sentinel2) {
                 return null;
             }
             p.next = p.next.next;
+            i++;
         }
         return p.next.item;
     }
 
-    public T getRecursive(int index){
+    public T getRecursive(int index) {
         //consider if the LLD is empty.
-        if(this.sentinel1.next == this.sentinel2){
+        if (this.sentinel1.next == this.sentinel2) {
             return null;
         }
         return this.getRecursive(index, this.sentinel1.next);
     }
 
-    public T getRecursive(int index, StuffNode p){
-        if(index == 0){
+    private T getRecursive(int index, StuffNode p) {
+        if (index == 0) {
             return p.item;
         }
-        if(p.next == sentinel2){
+        if (p.next == sentinel2) {
             return null;
         }
         return getRecursive(index - 1, p.next);
     }
 
+    /** sp19
     public  LinkedListDeque(LinkedListDeque other) {
         sentinel1 = new StuffNode(null, null, null);
         sentinel2 = new StuffNode(null, sentinel1, null);
@@ -135,6 +143,7 @@ public class LinkedListDeque <T>{
         }
 
     }
+     */
 
 
 
