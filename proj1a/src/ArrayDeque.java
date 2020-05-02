@@ -3,6 +3,7 @@ public class ArrayDeque<T> {
     private T[] items;
     private int nextFirst;
     private int nextLast;
+    private int index;
     private int size;
     //Create a new integer counting the usage.
 
@@ -11,8 +12,26 @@ public class ArrayDeque<T> {
         size = 0;
         nextFirst = 0;
         nextLast = 1;
+        index = 1;
     }
 
+    //Moves nextFirst forward, if out of range, being circular.
+    private int forward(int index) {
+        index -= 1;
+        if (index < 0) {
+            index = items.length - 1;
+        }
+        return index;
+    }
+
+    //Moves nextLast backward, if out of range, being circular.
+    private int backward(int index) {
+        index += 1;
+        if (index == items.length) {
+            index = 0;
+        }
+        return index;
+    }
 
     // Adds the item in the AarrayDeque.
     public void addFirst(T item) {
@@ -20,6 +39,8 @@ public class ArrayDeque<T> {
         if (size == items.length) {
             resize();
         }
+        items[nextFirst] = item;
+        nextFirst = forward(nextFirst);
         size += 1;
     }
 
@@ -28,7 +49,8 @@ public class ArrayDeque<T> {
         if (size == items.length) {
             resize();
         }
-        items[size] = item;
+        items[nextLast] = item;
+        nextLast = backward(nextLast);
         size += 1;
     }
 
@@ -44,8 +66,15 @@ public class ArrayDeque<T> {
 
     //print all the items in AD.
     public void printDeque() {
-        for (int i = 0; i < items.length; i++) {
-            System.out.print(items[i] + " ");
+        int i = nextFirst + 1;
+        while (i != nextFirst) {
+            if (items[i] != null) {
+                System.out.print(items[i] + " ");
+            }
+            i++;
+            if (i == items.length) {
+                i = 0;
+            }
         }
         System.out.println();
     }
@@ -54,46 +83,37 @@ public class ArrayDeque<T> {
         if (items == null) {
             return null;
         }
-        //Create the new array and copy all the items in it.
-        T rmitem = items[0];
-        T[] tempItem = (T[]) new Object[items.length];
-        System.arraycopy(items, 1, tempItem, 0, size - 1);
-        items[0] = null;
-        items = tempItem;
-        size -= 1;
-        if ((size -= 1) < 0) {
-            size = 0;
-        }
+        //Let the nextFirst go backward, and let the remove item equals null.
+        nextFirst = backward(nextFirst);
+        T removeItem = items[nextFirst];
+        items[nextFirst] = null;
         //Checks the usage.
-        if (!checkusage()) {
+        if (!checkUsage()) {
             resize();
         }
-        return rmitem;
+        return removeItem;
     }
 
     public T removeLast() {
         if (items == null) {
             return null;
         }
-        T rmitem = items[size - 1];
-        items[size - 1] = null;
-        size -= 1;
-        if ((size -= 1) < 0) {
-            size = 0;
-        }
-        //Checks the usage.
-        if (!checkusage()) {
+
+        nextLast = forward(nextLast);
+        T removeItem = items[nextLast];
+        items[nextLast] = null;
+
+        if (!checkUsage()) {
             resize();
         }
-        return rmitem;
+        return removeItem;
     }
 
     //Gets the item on the index position.
     public T get(int index) {
-        if (index > size) {
-            return null;
-        }
-        return items[index];
+        //Find the first position, and the plus index+1, find the position.
+        int position = backward(nextFirst) + (index + 1);
+        return items[position];
     }
 
     //Creates a deep copy of other, which means the whole new AD.
@@ -107,7 +127,7 @@ public class ArrayDeque<T> {
      */
 
     //Checks if the usage > 25%
-    private boolean checkusage() {
+    private boolean checkUsage() {
         return (size * 4) >= items.length;
     }
 
@@ -115,7 +135,7 @@ public class ArrayDeque<T> {
     private void resize() {
         int capacity = size * 4;
         T[] tempItems = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, tempItems, 0, size);
+        System.arraycopy(items, 0, tempItems, 0, items.length);
         items = tempItems;
     }
 
