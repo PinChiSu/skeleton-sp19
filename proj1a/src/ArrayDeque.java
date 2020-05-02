@@ -3,7 +3,6 @@ public class ArrayDeque<T> {
     private T[] items;
     private int nextFirst;
     private int nextLast;
-    private int index;
     private int size;
     //Create a new integer counting the usage.
 
@@ -12,8 +11,8 @@ public class ArrayDeque<T> {
         size = 0;
         nextFirst = 0;
         nextLast = 1;
-        index = 1;
     }
+
 
     //Moves nextFirst forward, if out of range, being circular.
     private int forward(int index) {
@@ -86,7 +85,8 @@ public class ArrayDeque<T> {
         //Let the nextFirst go backward, and let the remove item equals null.
         nextFirst = backward(nextFirst);
         T removeItem = items[nextFirst];
-        items[nextFirst] = null;
+        size -= 1;
+        //items[nextFirst] = null;
         //Checks the usage.
         if (!checkUsage()) {
             resize();
@@ -101,8 +101,8 @@ public class ArrayDeque<T> {
 
         nextLast = forward(nextLast);
         T removeItem = items[nextLast];
-        items[nextLast] = null;
-
+        //items[nextLast] = null;
+        size -= 1;
         if (!checkUsage()) {
             resize();
         }
@@ -112,7 +112,7 @@ public class ArrayDeque<T> {
     //Gets the item on the index position.
     public T get(int index) {
         //Find the first position, and the plus index+1, find the position.
-        int position = backward(nextFirst) + (index + 1);
+        int position = (backward(nextFirst) + index) % items.length;
         return items[position];
     }
 
@@ -128,18 +128,29 @@ public class ArrayDeque<T> {
 
     //Checks if the usage > 25%
     private boolean checkUsage() {
-        return (size * 4) >= items.length;
+        return (size * 4) >= items.length && size > 16;
     }
 
     //Creates a bigger new items, keep the usage at 25%.
     private void resize() {
         int capacity = size * 4;
         T[] tempItems = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, tempItems, 0, items.length);
+        System.arraycopy(items, 0, tempItems, 0, tempItems.length);
         items = tempItems;
+        //System.out.println(items.length);
     }
 
 
+    /*
+    public static void main(String[] args) {
+        ArrayDeque<Integer> test = new ArrayDeque<>();
+        test.addFirst(2);
+        test.removeFirst();
+        //test.removeLast();
+
+
+    }
+     */
 
 
 }
