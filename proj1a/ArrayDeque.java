@@ -135,7 +135,12 @@ public class ArrayDeque<T> {
     private void resize() {
         int capacity = size * 4;
         T[] tempItems = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, tempItems, 0, size);
+
+        for (int i = 0; i < size; i++) {
+            tempItems[i] = items[(backward(nextFirst) + i) % items.length];
+        }
+        nextFirst = tempItems.length - 1;
+        nextLast = size;
         items = tempItems;
         //System.out.println(items.length);
     }
@@ -144,13 +149,23 @@ public class ArrayDeque<T> {
     /*
     public static void main(String[] args) {
         ArrayDeque<Integer> test = new ArrayDeque<>();
+        test.addFirst(0);
+        test.addFirst(1);
         test.addFirst(2);
-        test.removeFirst();
-        //test.removeLast();
-
+        test.addFirst(3);
+        test.addFirst(4);
+        test.addFirst(5);
+        test.addFirst(6);
+        test.isEmpty();
+        test.addFirst(8);
+        test.addFirst(9);
+        test.isEmpty();
+        test.removeLast();
 
     }
-    */
+
+     */
+
 
 
 
