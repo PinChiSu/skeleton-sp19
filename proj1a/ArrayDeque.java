@@ -137,7 +137,7 @@ public class ArrayDeque<T> {
 
     //Creates a new items, keep the usage at 25%.
     private void resize() {
-        int capacity = size + 10;
+        int capacity = size + 1000;
         T[] tempItems = (T[]) new Object[capacity];
 
         for (int i = 0; i < size; i++) {
