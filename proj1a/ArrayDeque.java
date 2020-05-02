@@ -128,14 +128,14 @@ public class ArrayDeque<T> {
 
     //Checks if the usage > 25%
     private boolean checkUsage() {
-        return (size * 4) >= items.length && size > 16;
+        return ((size * 4) >= items.length) && (size > 16);
     }
 
     //Creates a bigger new items, keep the usage at 25%.
     private void resize() {
         int capacity = size * 4;
         T[] tempItems = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, tempItems, 0, tempItems.length);
+        System.arraycopy(items, 0, tempItems, 0, size);
         items = tempItems;
         //System.out.println(items.length);
     }
@@ -150,7 +150,9 @@ public class ArrayDeque<T> {
 
 
     }
-     */
+    */
+
+
 
 
 }
