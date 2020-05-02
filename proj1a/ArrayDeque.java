@@ -79,7 +79,7 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if (items == null) {
+        if (isEmpty()) {
             return null;
         }
         //Let the nextFirst go backward, and let the remove item equals null.
@@ -95,7 +95,7 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        if (items == null) {
+        if (isEmpty()) {
             return null;
         }
 
@@ -128,7 +128,11 @@ public class ArrayDeque<T> {
 
     //Checks if the usage > 25%
     private boolean checkUsage() {
-        return ((size * 4) >= items.length) && (size > 16);
+        if (size >= 16) {
+            return (size * 4) >= items.length;
+        } else {
+            return true;
+        }
     }
 
     //Creates a bigger new items, keep the usage at 25%.
@@ -149,22 +153,14 @@ public class ArrayDeque<T> {
     /*
     public static void main(String[] args) {
         ArrayDeque<Integer> test = new ArrayDeque<>();
-        test.addFirst(0);
-        test.addFirst(1);
-        test.addFirst(2);
-        test.addFirst(3);
-        test.addFirst(4);
-        test.addFirst(5);
-        test.addFirst(6);
-        test.isEmpty();
-        test.addFirst(8);
-        test.addFirst(9);
-        test.isEmpty();
         test.removeLast();
+
 
     }
 
      */
+
+
 
 
 
